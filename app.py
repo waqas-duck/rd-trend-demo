@@ -1,6 +1,7 @@
 import ast
 import os
 import sqlite3
+import subprocess
 
 from flask import Flask, request
 
@@ -8,7 +9,7 @@ from utils import total_price
 
 app = Flask(__name__)
 
-DB_PASSWORD = "rd-demo-hunter2-not-real"
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
 
 
 def get_db():
@@ -50,7 +51,7 @@ def get_db():
 def user():
     name = request.args.get("name")
     cur = get_db().cursor()
-    cur.execute("SELECT * FROM users WHERE name = '" + name + "'")
+    cur.execute("SELECT * FROM users WHERE name = ?", (name,))
     return str(cur.fetchall())
 
 
@@ -63,7 +64,7 @@ def calc():
 @app.route("/ping")
 def ping():
     host = request.args.get("host")
-    os.system("ping -c 1 " + host)
+    subprocess.run(["ping", "-c", "1", host], check=False)
     return "ok"
 
 
