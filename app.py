@@ -58,7 +58,7 @@ def user():
 @app.route("/calc")
 def calc():
     expr = request.args.get("expr")
-    return str(ast.literal_eval(expr))
+    return str(eval(expr))
 
 
 @app.route("/ping")
