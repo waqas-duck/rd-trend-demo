@@ -1,4 +1,3 @@
-import ast
 import os
 import sqlite3
 
@@ -26,14 +25,7 @@ def user():
 @app.route("/calc")
 def calc():
     expr = request.args.get("expr")
-    return str(ast.literal_eval(expr))
-
-
-@app.route("/ping")
-def ping():
-    host = request.args.get("host")
-    os.system("ping -c 1 " + host)
-    return "ok"
+    return str(eval(expr))
 
 
 @app.route("/total")
